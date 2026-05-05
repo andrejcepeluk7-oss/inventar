@@ -1,17 +1,18 @@
 <!DOCTYPE html><html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Счетчики</title>
     <style>
         :root {
-            --bg-main: #202124;      /* как тёмная тема Google */
+            --bg-main: #202124;
             --bg-block: #2d2f33;
             --bg-hover: #3a3d42;--text-main: #e8eaed;
         --text-soft: #9aa0a6;
+    }
 
-        --accent: #8ab4f8;
-        --accent-hover: #669df6;
+    * {
+        box-sizing: border-box;
     }
 
     body {
@@ -19,78 +20,85 @@
         font-family: "Comic Sans MS", cursive, sans-serif;
         background-color: var(--bg-main);
         color: var(--text-main);
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
     }
 
     header {
         background: var(--bg-block);
-        padding: 15px;
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        flex-wrap: wrap;
+        padding: 8px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
     }
 
     .section {
         display: flex;
         align-items: center;
-        gap: 5px;
+        justify-content: space-between;
+        gap: 4px;
         background: #303134;
-        padding: 10px 15px;
-        border-radius: 20px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        padding: 6px 8px;
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        width: 100%;
+    }
+
+    .section span {
+        font-size: 14px;
+        min-width: 40px;
     }
 
     button {
         border: none;
         border-radius: 50%;
-        width: 32px;
-        height: 32px;
-        font-size: 18px;
+        width: 24px;
+        height: 24px;
+        font-size: 14px;
         cursor: pointer;
         background: #3a3d42;
         color: var(--text-main);
-        transition: 0.2s;
     }
 
-    button:hover {
-        background: #4a4d52;
+    button:active {
+        transform: scale(0.9);
     }
 
     input {
-        width: 50px;
+        width: 38px;
         text-align: center;
-        border-radius: 10px;
+        border-radius: 6px;
         border: 1px solid #5f6368;
         font-family: inherit;
         background: #202124;
         color: var(--text-main);
+        font-size: 12px;
     }
 
     main {
-        padding: 20px;
+        flex: 1;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
     }
 
     textarea {
+        flex: 1;
         width: 100%;
-        min-height: 120px;
-        border-radius: 15px;
+        border-radius: 12px;
         border: 1px solid #5f6368;
         padding: 10px;
         font-family: inherit;
-        resize: vertical;
+        resize: none;
         background: #303134;
         color: var(--text-main);
-        box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        min-height: 60vh;
     }
 
-    /* 📱 Мобильная версия */
-    @media (max-width: 600px) {
-        header {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            justify-items: center;
-        }
+    h3 {
+        margin: 5px 0;
+        font-size: 16px;
     }
 </style>
 
@@ -124,7 +132,7 @@
 
 </header><main>
     <h3>Заметки</h3>
-    <textarea placeholder="Пиши сюда любой текст..."></textarea>
+    <textarea placeholder="Пиши сюда..."></textarea>
 </main><script>
     function changeValue(id, delta) {
         const input = document.getElementById(id);
