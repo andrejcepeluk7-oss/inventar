@@ -1,28 +1,26 @@
 <!DOCTYPE html><html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Счетчики</title>
     <style>
         :root {
             --bg-main: #202124;
             --bg-block: #2d2f33;
-            --bg-hover: #3a3d42;--text-main: #e8eaed;
-        --text-soft: #9aa0a6;
-    }
-
-    * {
+            --text-main: #e8eaed;
+        }* {
         box-sizing: border-box;
     }
 
     body {
         margin: 0;
         font-family: "Comic Sans MS", cursive, sans-serif;
-        background-color: var(--bg-main);
+        background: var(--bg-main);
         color: var(--text-main);
         height: 100vh;
         display: flex;
         flex-direction: column;
+        font-size: 18px;
     }
 
     header {
@@ -37,43 +35,33 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 4px;
+        gap: 6px;
         background: #303134;
-        padding: 6px 8px;
+        padding: 8px;
         border-radius: 12px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.5);
         width: 100%;
-    }
-
-    .section span {
-        font-size: 14px;
-        min-width: 40px;
+        font-size: 16px;
     }
 
     button {
         border: none;
         border-radius: 50%;
-        width: 24px;
-        height: 24px;
-        font-size: 14px;
+        width: 28px;
+        height: 28px;
+        font-size: 16px;
         cursor: pointer;
         background: #3a3d42;
         color: var(--text-main);
     }
 
-    button:active {
-        transform: scale(0.9);
-    }
-
     input {
-        width: 38px;
+        width: 45px;
         text-align: center;
         border-radius: 6px;
         border: 1px solid #5f6368;
-        font-family: inherit;
         background: #202124;
         color: var(--text-main);
-        font-size: 12px;
+        font-size: 16px;
     }
 
     main {
@@ -84,60 +72,141 @@
     }
 
     textarea {
-        flex: 1;
         width: 100%;
         border-radius: 12px;
         border: 1px solid #5f6368;
-        padding: 10px;
+        padding: 12px;
         font-family: inherit;
-        resize: none;
         background: #303134;
         color: var(--text-main);
-        min-height: 60vh;
+        flex: 1;
+        resize: none;
+        font-size: 16px;
     }
 
-    h3 {
-        margin: 5px 0;
-        font-size: 16px;
+    .reset {
+        margin: 10px auto 0;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 32px;
+        display: block;
+        line-height: 1;
+    }
+
+    .reset:active {
+        transform: scale(0.9);
+    }
+
+    @media (min-width: 800px) {
+        header {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .section {
+            justify-content: center;
+        }
+
+        button {
+            width: 24px;
+            height: 24px;
+            font-size: 14px;
+        }
+
+        input {
+            width: 40px;
+        }
+
+        textarea {
+            max-width: 650px;
+            margin: 0 auto;
+        }
     }
 </style>
 
 </head>
 <body><header>
-    <div class="section">
-        <span>М.м.</span>
+    <div class="section">М.м.
         <button onclick="changeValue('mm', -1)">-</button>
         <input id="mm" type="number" value="0">
         <button onclick="changeValue('mm', 1)">+</button>
-    </div><div class="section">
-    <span>С.м.</span>
+    </div><div class="section">С.м.
     <button onclick="changeValue('sm', -1)">-</button>
     <input id="sm" type="number" value="0">
     <button onclick="changeValue('sm', 1)">+</button>
 </div>
 
-<div class="section">
-    <span>З.м.</span>
+<div class="section">З.м.
     <button onclick="changeValue('zm', -1)">-</button>
     <input id="zm" type="number" value="0">
     <button onclick="changeValue('zm', 1)">+</button>
 </div>
 
-<div class="section">
-    <span>П.м.</span>
+<div class="section">П.м.
     <button onclick="changeValue('pm', -1)">-</button>
     <input id="pm" type="number" value="0">
     <button onclick="changeValue('pm', 1)">+</button>
 </div>
 
 </header><main>
-    <h3>Заметки</h3>
-    <textarea placeholder="Пиши сюда..."></textarea>
+    <textarea id="notes" placeholder="Пиши сюда..."></textarea>
+    <button class="reset" onclick="resetAll()">🗑️</button>
 </main><script>
     function changeValue(id, delta) {
-        const input = document.getElementById(id);
-        let value = parseInt(input.value) || 0;
-        input.value = value + delta;
+        let values = getValues();
+        values[id] += delta;
+        normalize(values);
+        setValues(values);
+        save();
     }
+
+    function normalize(v) {
+        if (v.mm >= 100) { v.sm += Math.floor(v.mm / 100); v.mm %= 100; }
+        if (v.sm >= 100) { v.zm += Math.floor(v.sm / 100); v.sm %= 100; }
+        if (v.zm >= 100) { v.pm += Math.floor(v.zm / 100); v.zm %= 100; }
+
+        if (v.mm < 0) v.mm = 0;
+        if (v.sm < 0) v.sm = 0;
+        if (v.zm < 0) v.zm = 0;
+        if (v.pm < 0) v.pm = 0;
+    }
+    function getValues() {
+        return {
+            mm: parseInt(mm.value) || 0,
+            sm: parseInt(sm.value) || 0,
+            zm: parseInt(zm.value) || 0,
+            pm: parseInt(pm.value) || 0
+        };
+    }
+
+    function setValues(v) {
+        mm.value = v.mm;
+        sm.value = v.sm;
+        zm.value = v.zm;
+        pm.value = v.pm;
+    }
+
+    function save() {
+        localStorage.setItem('coins', JSON.stringify(getValues()));
+        localStorage.setItem('notes', notes.value);
+    }
+
+    function load() {
+        let data = JSON.parse(localStorage.getItem('coins'));
+        if (data) setValues(data);
+        notes.value = localStorage.getItem('notes') || '';
+    }
+
+    function resetAll() {
+        localStorage.clear();
+        setValues({ mm: 0, sm: 0, zm: 0, pm: 0 });
+        notes.value = '';
+        save();
+    }
+
+    document.querySelectorAll('input').forEach(i => i.addEventListener('input', save));
+    notes.addEventListener('input', save);
+
+    load();
 </script></body>
 </html>
