@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Счетчики</title>
+    <style>
+        :root {
+            --bg-main: #202124;      /* как тёмная тема Google */
+            --bg-block: #2d2f33;
+            --bg-hover: #3a3d42;--text-main: #e8eaed;
+        --text-soft: #9aa0a6;
+
+        --accent: #8ab4f8;
+        --accent-hover: #669df6;
+    }
+
+    body {
+        margin: 0;
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        background-color: var(--bg-main);
+        color: var(--text-main);
+    }
+
+    header {
+        background: var(--bg-block);
+        padding: 15px;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .section {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background: #303134;
+        padding: 10px 15px;
+        border-radius: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+
+    button {
+        border: none;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        font-size: 18px;
+        cursor: pointer;
+        background: #3a3d42;
+        color: var(--text-main);
+        transition: 0.2s;
+    }
+
+    button:hover {
+        background: #4a4d52;
+    }
+
+    input {
+        width: 50px;
+        text-align: center;
+        border-radius: 10px;
+        border: 1px solid #5f6368;
+        font-family: inherit;
+        background: #202124;
+        color: var(--text-main);
+    }
+
+    main {
+        padding: 20px;
+    }
+
+    textarea {
+        width: 100%;
+        min-height: 120px;
+        border-radius: 15px;
+        border: 1px solid #5f6368;
+        padding: 10px;
+        font-family: inherit;
+        resize: vertical;
+        background: #303134;
+        color: var(--text-main);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+
+    /* 📱 Мобильная версия */
+    @media (max-width: 600px) {
+        header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            justify-items: center;
+        }
+    }
+</style>
+
+</head>
+<body><header>
+    <div class="section">
+        <span>М.м.</span>
+        <button onclick="changeValue('mm', -1)">-</button>
+        <input id="mm" type="number" value="0">
+        <button onclick="changeValue('mm', 1)">+</button>
+    </div><div class="section">
+    <span>С.м.</span>
+    <button onclick="changeValue('sm', -1)">-</button>
+    <input id="sm" type="number" value="0">
+    <button onclick="changeValue('sm', 1)">+</button>
+</div>
+
+<div class="section">
+    <span>З.м.</span>
+    <button onclick="changeValue('zm', -1)">-</button>
+    <input id="zm" type="number" value="0">
+    <button onclick="changeValue('zm', 1)">+</button>
+</div>
+
+<div class="section">
+    <span>П.м.</span>
+    <button onclick="changeValue('pm', -1)">-</button>
+    <input id="pm" type="number" value="0">
+    <button onclick="changeValue('pm', 1)">+</button>
+</div>
+
+</header><main>
+    <h3>Заметки</h3>
+    <textarea placeholder="Пиши сюда любой текст..."></textarea>
+</main><script>
+    function changeValue(id, delta) {
+        const input = document.getElementById(id);
+        let value = parseInt(input.value) || 0;
+        input.value = value + delta;
+    }
+</script></body>
+</html>
