@@ -8,9 +8,7 @@
             --bg-main: #202124;
             --bg-block: #2d2f33;
             --text-main: #e8eaed;
-        }* {
-        box-sizing: border-box;
-    }
+        }* { box-sizing: border-box; }
 
     body {
         margin: 0;
@@ -85,13 +83,14 @@
     }
 
     .reset {
-        margin: 10px auto 0;
+        margin: 10px 0 0 0;
         background: transparent;
         border: none;
         cursor: pointer;
         font-size: 32px;
         display: block;
         line-height: 1;
+        align-self: flex-start;
     }
 
     .reset:active {
@@ -101,20 +100,6 @@
     @media (min-width: 800px) {
         header {
             grid-template-columns: repeat(4, 1fr);
-        }
-
-        .section {
-            justify-content: center;
-        }
-
-        button {
-            width: 24px;
-            height: 24px;
-            font-size: 14px;
-        }
-
-        input {
-            width: 40px;
         }
 
         textarea {
@@ -150,7 +135,7 @@
 
 </header><main>
     <textarea id="notes" placeholder="Пиши сюда..."></textarea>
-    <button class="reset" onclick="resetAll()">🗑️</button>
+    <button class="reset" onclick="confirmReset()">🗑️</button>
 </main><script>
     function changeValue(id, delta) {
         let values = getValues();
@@ -195,6 +180,12 @@
         let data = JSON.parse(localStorage.getItem('coins'));
         if (data) setValues(data);
         notes.value = localStorage.getItem('notes') || '';
+    }
+
+    function confirmReset() {
+        if (confirm("Вы точно хотите удалить все?")) {
+            resetAll();
+        }
     }
 
     function resetAll() {
